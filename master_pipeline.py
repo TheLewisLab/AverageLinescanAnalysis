@@ -1190,8 +1190,8 @@ def add_excel_formulas(ws, analysis_channels: List[int], data_length: int, param
 
             section2_avg_letter = col_to_letter(section2_avg_col)
 
-            # MAX formula for average
-            max_formula = f"=MAX({section2_avg_letter}2:{section2_avg_letter}{data_length + 1})"
+            # Use absolute maximum for normalization (handles both positive and negative values)
+            max_formula = f"=IF(ABS(MIN({section2_avg_letter}2:{section2_avg_letter}{data_length + 1}))>MAX({section2_avg_letter}2:{section2_avg_letter}{data_length + 1}),ABS(MIN({section2_avg_letter}2:{section2_avg_letter}{data_length + 1})),MAX({section2_avg_letter}2:{section2_avg_letter}{data_length + 1}))"
             ws.cell(row=max_calc_row, column=section2_avg_col, value=max_formula)
 
             # STD max = same as avg max
@@ -1634,3 +1634,4 @@ if __name__ == "__main__":
         traceback.print_exc()
 
     input("Press Enter to exit...")
+
